@@ -1,0 +1,12 @@
+# virtual environment
+.venv
+
+# node modules directory
+node_modules
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+page/__pycache__/
+*.py[cod]
+
+.idea

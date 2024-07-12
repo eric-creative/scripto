@@ -1,0 +1,43 @@
+{###########################################################################################
+        SCRIPTO USES JINJA2 TEMPLATES
+        LAYOUT TEMPLATE DEFINES WHAT IS COMMON ACROSS THE APP
+############################################################################################}
+
+<!doctype html>
+<html lang="en">
+<head>
+
+    {###########################################################################################
+        DOCUMENT TITLE
+    ############################################################################################}
+
+    <title>{% block title %} {# document title goes here #} {% endblock %}</title>
+
+    {############################################################################################
+        DOCUMENT META TAGS
+    #############################################################################################}
+
+    <meta name="description" content="A web created by Scripto"/>
+    {#  YOU CAN ADD MORE META TAGS LIKE THIS (e.g. <meta name="NAME" content="CONTENT" />)   #}
+
+    {#############################################################################################
+        LINK TO STATIC FILES AND EXTERNAL SRC TO JAVASCRIPT OR CSS
+    ##############################################################################################}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+{#############################################################################################
+        ALL THE CONTENTS GOES HERE. CONSIDER EDITING THIS PLACE IF YOU NEED TO ADD COMPONENTS
+        WHICH ARE VISIBLE ALL ACROSS THE APP
+##############################################################################################}
+
+{# YOU CAN ADD YOUR APP HEADER (e.g. {% include 'components/header.jinja2' %} #}
+
+{% block content %}{% endblock %}
+
+{#  YOU CAN ADD YOUR APP FOOTER (e.g. {% include 'components/header.jinja2' %})  #}
+
+</body>
+</html>

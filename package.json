@@ -1,0 +1,17 @@
+{
+  "name": "scripto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind_watch": "npx tailwindcss -i templates/global.css -o ./static/css/style.css --watch",
+    "tailwind_build": "npx tailwindcss -i templates/global.css -o ./static/css/style.css --build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.4"
+  }
+}
