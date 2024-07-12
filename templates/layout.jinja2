@@ -8,16 +8,23 @@
 <head>
 
     {###########################################################################################
-        DOCUMENT TITLE
+        DOCUMENT TITLE AND FAVICON ICON
     ############################################################################################}
 
     <title>{% block title %} {# document title goes here #} {% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='public/favicon/favicon.png') }}"
+          sizes="16x16">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='public/favicon/favicon.png') }}"
+          sizes="32x32">
 
     {############################################################################################
         DOCUMENT META TAGS
     #############################################################################################}
+    {% block styles %}
 
-    <meta name="description" content="A web created by Scripto"/>
+    {% endblock %}
+
+    <meta name="description" content="Build your web app faster with Scripto"/>
     {#  YOU CAN ADD MORE META TAGS LIKE THIS (e.g. <meta name="NAME" content="CONTENT" />)   #}
 
     {#############################################################################################
@@ -38,6 +45,6 @@
 {% block content %}{% endblock %}
 
 {#  YOU CAN ADD YOUR APP FOOTER (e.g. {% include 'components/header.jinja2' %})  #}
-
+<script src="{{ url_for('static', filename='js/global.js') }}"></script>
 </body>
 </html>

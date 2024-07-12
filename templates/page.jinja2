@@ -1,9 +1,13 @@
 {% extends 'layout.jinja2' %}
 
 {% block title %}
-	Test Page
+    Scripto
 {% endblock %}
 
 {% block content %}
-	<h1 class="text-2xl">Hello to scripto</h1>
+    <div class="w-screen h-screen bg-black flex justify-center gap-2 items-center flex-col">#}
+        <img class="z-50 rounded-full p-2 h-20 w-20"
+             src="{{ url_for('static', filename='public/scripto.png') }}" alt="Scripto">
+        <h1 class="text-white font-light text-xl">Scripto is running...</h1>
+    </div>
 {% endblock %}
