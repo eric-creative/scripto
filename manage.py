@@ -196,8 +196,6 @@ def remove_page(pagename):
 def handle_arg(value, pagename):
     if value == "add":
         generate(pagename)
-    elif value == "register":
-        register_new_blueprint(pagename)
     elif value == "remove":
         remove_page(pagename)
     else:
@@ -207,7 +205,7 @@ def handle_arg(value, pagename):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a text file.")
     parser.add_argument("pagename", help="Name of the page to create")
-    parser.add_argument("--run", choices=["add", "register", "remove"], default="page", help="Adds a page <name>")
+    parser.add_argument("--run", choices=["add", "remove"], default="page", help="Adds a page <name>")
 
     args = parser.parse_args()
 
