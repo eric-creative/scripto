@@ -1,4 +1,6 @@
 import os
+import pathlib
+import shutil
 import sys
 import argparse
 import time
@@ -61,7 +63,6 @@ def list_files(directory_path):
 def generate_files(pagename):
     if pagename is not None:
         f = [list_files(os.path.join(pageDir, pagename)), list_files(os.path.join(templateDir, pagename))]
-        print('Scanning directories')
         for a in f:
             if a is None:
                 try:
@@ -71,7 +72,6 @@ def generate_files(pagename):
                             f'# __INIT__ INITIALIZES THIS PAGE........................................ \n'
                             f'######################################################################## \n'
                         )
-                        print('Directory initialization complete')
                     with open(os.path.join(pageDir, pagename, 'page.py'), 'w+') as f:
                         f.write(
                             f'######################################################################## \n'
@@ -92,8 +92,6 @@ def generate_files(pagename):
                             f"\treturn render_template('{pagename}/page.jinja2') \n"
                             f'\n'
                         )
-                        print("Blueprint for page {} created successful".format(pagename))
-
                     try:
                         with open(os.path.join(templateDir, pagename, 'page.jinja2'), 'w+') as f:
                             f.write(
@@ -105,7 +103,6 @@ def generate_files(pagename):
                                 f"\t<h1>{str(pagename).capitalize()} page</h1> \n"
                                 "{% endblock %} \n"
                             )
-                            print("Page template for page {} created successful".format(pagename))
                     except FileNotFoundError:
                         raise FileNotFoundError(f'Unable to write template file: {pagename}')
 
@@ -113,6 +110,9 @@ def generate_files(pagename):
                     raise FileNotFoundError(f'Unable to write page file: {pagename}')
             else:
                 delete_file(str(a))
+        print(f'Page {pagename} has been added to your project')
+        time.sleep(2)
+        register_new_blueprint(pagename)
 
 
 def generate(pagename):
@@ -161,11 +161,45 @@ def generate(pagename):
             print(f"Error creating directory: {e}")
 
 
+def remove_page(pagename):
+    if os.path.exists(os.path.join(pageDir, pagename)):
+        if os.path.exists(os.path.join(templateDir, pagename)):
+            p = pathlib.Path(os.path.join(pageDir, pagename))
+            t = pathlib.Path(os.path.join(templateDir, pagename))
+            try:
+                shutil.rmtree(t)
+                shutil.rmtree(p)
+                new_lines = []
+                with open(wsgiDir, 'r+') as c:
+                    lines = c.readlines()
+                    for i, line in enumerate(lines):
+                        imported = line.startswith(f"from .page.{pagename}.page import {pagename}")
+                        registered = line.startswith(f"app.register_blueprint({pagename}")
+                        if not (imported or registered):
+                            # Include other lines in the new_lines list
+                            new_lines.append(line)
+                    c.seek(0)
+                    # Convert the list of lines to a single string
+                    updated_content = "".join(new_lines)
+                    c.write(updated_content)
+                    c.truncate()
+                    print(f'Page {pagename} removed from your project')
+
+            except FileNotFoundError:
+                raise FileExistsError(f'Unable to remove page: {pagename}')
+        else:
+            raise FileExistsError(f'\n Template with name: {pagename} is not a directory ')
+    else:
+        raise FileExistsError(f'\n Page with name: {pagename} does not exist')
+
+
 def handle_arg(value, pagename):
     if value == "add":
         generate(pagename)
     elif value == "register":
         register_new_blueprint(pagename)
+    elif value == "remove":
+        remove_page(pagename)
     else:
         print(f"Invalid command: {value}.")
 
@@ -173,7 +207,7 @@ def handle_arg(value, pagename):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a text file.")
     parser.add_argument("pagename", help="Name of the page to create")
-    parser.add_argument("--run", choices=["add", "register"], default="page", help="Adds a page <name>")
+    parser.add_argument("--run", choices=["add", "register", "remove"], default="page", help="Adds a page <name>")
 
     args = parser.parse_args()
 
